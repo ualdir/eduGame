@@ -312,7 +312,6 @@ Local: Vitória da Conquista - BA
 Métrica	Valor
 Público-alvo	22.5M alunos (EF2 + EM)
 Meta em 2 anos	1% do mercado útil (220k alunos)
-Investimento	R$ 399.924,28
 Prazo	16 meses
 Equipe	4 funcionários + parceiros
 🎯 Impacto Esperado
@@ -344,7 +343,7 @@ Dashboard dinâmico
 
 Painel multi-perfil
 
-Próximas versões
+Versões
 v1.1.0 - Backend real (Janeiro 2025)
 
 v1.2.0 - Mobile app (Março 2025)
