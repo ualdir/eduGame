@@ -302,10 +302,6 @@ Nome: Ualdir Oliveira Santos Neto
 
 Email: ualdir@yahoo.com
 
-Telefone: (77) 3422-2807
-
-Empresa Proponente
-
 Vanmo
 
 Email: contato@vanmo.com
