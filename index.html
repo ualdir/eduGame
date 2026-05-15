@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,3 +6,456 @@
     <title>EduGame - Plataforma de Gamificação Educacional</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Login Screen (initial state) -->
+    <div id="login-screen">
+        <div class="login-container">
+            <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+                <i class="fas fa-gamepad"></i>
+                <span>EduGame</span>
+            </div>
+            
+            <h2>Bem-vindo ao EduGame</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: var(--gray);">
+                Plataforma de gamificação educacional com machine learning
+            </p>
+            
+            <div class="user-type-selector">
+                <div class="user-type-btn active" data-role="aluno">
+                    <i class="fas fa-user-graduate"></i>
+                    <div>Aluno</div>
+                </div>
+                <div class="user-type-btn" data-role="professor">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <div>Professor</div>
+                </div>
+                <div class="user-type-btn" data-role="gestor">
+                    <i class="fas fa-user-tie"></i>
+                    <div>Gestor</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <select id="username">
+                    <option value="joao">João Silva (Aluno)</option>
+                    <option value="maria">Maria Oliveira (Aluna)</option>
+                    <option value="prof_carlos">Prof. Carlos (Professor)</option>
+                    <option value="gestor_ana">Ana Souza (Gestora)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" value="123456" readonly>
+            </div>
+            
+            <button id="login-btn" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Entrar na Plataforma
+            </button>
+            
+            <div style="text-align: center; margin-top: 20px; color: var(--gray); font-size: 0.9rem;">
+                <p>MVP - Sistema de demonstração</p>
+                <p>Todos os usuários usam a mesma senha: 123456</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Application (hidden initially) -->
+    <div id="app" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>EduGame</span>
+                    </div>
+                    
+                    <nav>
+                        <ul>
+                            <li><a href="#" class="nav-link active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                            <li><a href="#" class="nav-link" data-page="quizzes"><i class="fas fa-question-circle"></i> Quizzes</a></li>
+                            <li><a href="#" class="nav-link" data-page="quiz-play"><i class="fas fa-play-circle"></i> Jogar</a></li>
+                            <li><a href="#" class="nav-link" data-page="progress"><i class="fas fa-chart-line"></i> Progresso</a></li>
+                            <li><a href="#" class="nav-link" data-page="reports"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                            <li id="teacher-nav" style="display: none;"><a href="#" class="nav-link" data-page="teacher"><i class="fas fa-chalkboard"></i> Professor</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <div class="user-menu">
+                        <div class="avatar" id="user-avatar">JS</div>
+                        <span id="user-name">João Silva</span>
+                        <button id="logout-btn" class="btn" style="padding: 8px 15px; margin-left: 10px;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content container">
+            <!-- Loading State -->
+            <div id="loading" style="display: none;">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Carregando sua experiência de aprendizado...</h3>
+                    <p>Preparando gamificação e machine learning</p>
+                </div>
+            </div>
+            
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <h1><i class="fas fa-home"></i> Dashboard</h1>
+                    <p id="dashboard-subtitle">Bem-vindo à plataforma de gamificação educacional</p>
+                </div>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3><i class="fas fa-star"></i> Pontuação Total</h3>
+                        <div class="stat" id="total-xp">1,850 XP</div>
+                        <p id="nivel-text">Você está no nível 3</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="xp-progress" style="width: 65%"></div>
+                        </div>
+                        <p id="proximo-nivel-text">650 XP para o próximo nível</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-trophy"></i> Conquistas</h3>
+                        <div class="stat" id="conquistas-stat">8/15</div>
+                        <p>Conquistas desbloqueadas</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="conquistas-progress" style="width: 53%"></div>
+                        </div>
+                        <p>Continue para desbloquear mais</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-check-circle"></i> Quiz Completos</h3>
+                        <div class="stat" id="quiz-completos">24</div>
+                        <p>Desafios concluídos</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 80%"></div>
+                        </div>
+                        <p id="quiz-restantes">6 quiz restantes nesta unidade</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-medal"></i> Ranking da Turma</h3>
+                        <div class="stat" id="ranking-posicao">#5</div>
+                        <p id="ranking-total">Entre 32 alunos</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                        <p id="distancia-proximo">150 XP atrás do 4º lugar</p>
+                    </div>
+                </div>
+                
+                <div class="gamification-panel">
+                    <h2><i class="fas fa-gamepad"></i> Elementos de Gamificação</h2>
+                    <p>Seu progresso no sistema</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Experiência (XP)</span>
+                            <span id="xp-text">1,850 / 2,500</span>
+                        </div>
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xp-bar-fill" style="width: 74%"></div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 25px;">Conquistas</h3>
+                    <div class="badges" id="badges-container">
+
+<div class="badges" id="badges-container">
+    <!-- Filled dynamically -->
+</div>
+
+<!-- NOVO CARD DE RECOMENDAÇÃO -->
+<div id="recomendacao-card" style="margin-top:25px; padding:15px; border-radius:8px; background:#E3F2FD; border-left:4px solid var(--secondary); display:none;">
+    <h3 style="margin-bottom:10px; font-size:1.1rem;">
+        <i class="fas fa-brain"></i> Recomendações do sistema
+    </h3>
+    <p id="recomendacao-mensagem" style="margin-bottom:5px;"></p>
+    <p id="recomendacao-acao" style="font-weight:500;"></p>
+</div>
+
+
+
+
+
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quizzes List Page -->
+            <div id="quizzes" class="page" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-question-circle"></i> Quizzes Disponíveis</h1>
+                    <p>Selecione um quiz para jogar e ganhar pontos</p>
+                </div>
+                
+                <div class="quiz-list" id="quizzes-list">
+                    <!-- Filled dynamically -->
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-info-circle"></i> Como Funciona?</h3>
+                    <p>Complete quizzes para ganhar pontos de experiência (XP). Cada quiz tem questões com diferentes níveis de dificuldade. Use dicas quando necessário (elas custam XP). Complete todos os quizzes de uma unidade para desbloquear conquistas especiais.</p>
+                </div>
+            </div>
+            
+            <!-- Quiz Play Page -->
+            <div id="quiz-play" class="page" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-play-circle"></i> Jogar Quiz</h1>
+                    <p id="quiz-play-subtitle">Teste seus conhecimentos e ganhe pontos</p>
+                </div>
+                
+                <div id="quiz-selection" class="quiz-container">
+                    <h3>Selecione um Quiz</h3>
+                    <p>Escolha um dos quizzes disponíveis para começar a jogar.</p>
+                    <div id="play-quiz-list" class="quiz-list">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+                
+                <div id="quiz-game" class="quiz-container" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <h3 id="quiz-title">Matemática - Unidade 3: Geometria</h3>
+                            <p id="quiz-progress">Questão 1 de 10</p>
+                        </div>
+                        <div style="background-color: var(--accent); color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold;" id="xp-reward">
+                            +50 XP
+                        </div>
+                    </div>
+                    
+                    <div class="question" id="question-text">
+                        Qual é a fórmula para calcular a área de um triângulo?
+                    </div>
+                    
+                    <div class="options" id="options-container">
+                        <!-- Filled dynamically -->
+                    </div>
+                    
+                    <div class="quiz-controls">
+                        <button class="btn btn-secondary" id="prev-btn">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        
+                        <div>
+                            <button class="btn btn-accent" id="hint-btn">
+                                <i class="fas fa-lightbulb"></i> Dica (<span id="hint-cost">10</span> XP)
+                            </button>
+                            <button class="btn btn-primary" id="next-btn">
+                                Próxima <i class="fas fa-arrow-right"></i>
+                            </button>
+                            <button class="btn btn-primary" id="submit-btn" style="display: none;">
+                                <i class="fas fa-paper-plane"></i> Enviar Resposta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quiz-results" class="quiz-container" style="display: none;">
+                    <h3 style="text-align: center; color: var(--primary);">Quiz Concluído!</h3>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <div style="font-size: 4rem; color: var(--accent); margin-bottom: 20px;">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 id="results-title">Parabéns!</h3>
+                        <p id="results-description">Você completou o quiz de Matemática</p>
+                        <div class="stat" id="results-xp">+250 XP</div>
+                        <p>XP Total: <span id="results-total-xp">2,100</span> XP</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-primary" id="play-again-btn">
+                            <i class="fas fa-redo"></i> Jogar Outro Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progress Page -->
+            <div id="progress" class="page" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-line"></i> Meu Progresso</h1>
+                    <p>Acompanhe sua evolução de aprendizado</p>
+                </div>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3><i class="fas fa-calendar-alt"></i> Atividade Semanal</h3>
+                        <div class="chart-placeholder">
+                            <div style="text-align: center;">
+                                <p>Gráfico de atividades</p>
+                                <p id="atividade-texto">(Dados coletados pelo Machine Learning)</p>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px;" id="atividade-semanal">Você completou 12 atividades esta semana</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-book"></i> Matérias</h3>
+                        <div style="margin-top: 20px;" id="materias-container">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gamification-panel">
+                    <h2><i class="fas fa-user-graduate"></i> Evolução do Avatar</h2>
+                    <p>Seu avatar evolui conforme seu aprendizado</p>
+                    
+                    <div style="display: flex; align-items: center; gap: 30px; margin-top: 25px; flex-wrap: wrap;" id="avatar-container">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Page -->
+            <div id="reports" class="page" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-bar"></i> Relatórios Analíticos</h1>
+                    <p id="reports-subtitle">Dados para tomada de decisão educacional</p>
+                </div>
+                
+                <div class="reports-grid" id="reports-container">
+                    <!-- Filled dynamically -->
+                </div>
+                
+                <div class="card" style="margin-top: 30px;">
+                    <h3><i class="fas fa-download"></i> Exportar Relatórios</h3>
+                    <p id="export-description">Os professores e gestores podem exportar relatórios detalhados para análise e tomada de decisão.</p>
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button class="btn btn-primary" id="export-pdf">
+                            <i class="fas fa-file-pdf"></i> Exportar PDF
+                        </button>
+                        <button class="btn btn-secondary" id="export-excel">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
+                        </button>
+                        <button class="btn btn-accent" id="refresh-reports">
+                            <i class="fas fa-sync-alt"></i> Atualizar Dados
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teacher Page -->
+            <div id="teacher" class="page" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-chalkboard-teacher"></i> Painel do Professor</h1>
+                    <p>Gerencie turmas, quizzes e acompanhe o desempenho dos alunos</p>
+                </div>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3><i class="fas fa-users"></i> Minhas Turmas</h3>
+                        <div class="stat">3</div>
+                        <p>Turmas ativas</p>
+                        <div style="margin-top: 20px;">
+                            <p><strong>8º Ano A:</strong> 32 alunos</p>
+                            <p><strong>9º Ano B:</strong> 28 alunos</p>
+                            <p><strong>7º Ano C:</strong> 30 alunos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-question-circle"></i> Quizzes Criados</h3>
+                        <div class="stat">15</div>
+                        <p>Quizzes ativos</p>
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
+                                <i class="fas fa-plus"></i> Criar Novo Quiz
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%;">
+                                <i class="fas fa-edit"></i> Gerenciar Quizzes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> Desempenho Geral</h3>
+                        <div class="stat">78%</div>
+                        <p>Média de acertos</p>
+                        <div class="progress-bar" style="margin-top: 20px;">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                        <p style="margin-top: 15px;">+5% em relação ao mês anterior</p>
+                    </div>
+                </div>
+                
+                <div class="gamification-panel">
+                    <h2><i class="fas fa-bell"></i> Alertas do Sistema</h2>
+                    <p>Recomendações baseadas em machine learning</p>
+                    
+                    <div style="margin-top: 20px;">
+                        <div style="background: #FFF3CD; border-left: 4px solid #FFC107; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
+                            <h4 style="margin: 0 0 5px 0; color: #856404;"><i class="fas fa-exclamation-triangle"></i> Alerta: Tópicos com Dificuldade</h4>
+                            <p style="margin: 0;">Os alunos estão com dificuldade em <strong>Geometria</strong> e <strong>Frações</strong>. Considere revisar esses tópicos.</p>
+                        </div>
+                        
+                        <div style="background: #D1ECF1; border-left: 4px solid #17A2B8; padding: 15px; margin-bottom: 15px; border-radius: 4px;">
+                            <h4 style="margin: 0 0 5px 0; color: #0C5460;"><i class="fas fa-lightbulb"></i> Recomendação: Gamificação</h4>
+                            <p style="margin: 0;">Os alunos que usam quizzes gamificados têm <strong>35% mais engajamento</strong>. Continue incentivando o uso da plataforma.</p>
+                        </div>
+                        
+                        <div style="background: #D4EDDA; border-left: 4px solid #28A745; padding: 15px; border-radius: 4px;">
+                            <h4 style="margin: 0 0 5px 0; color: #155724;"><i class="fas fa-trophy"></i> Reconhecimento: Alunos em Destaque</h4>
+                            <p style="margin: 0;"><strong>João Silva</strong> e <strong>Maria Oliveira</strong> tiveram o maior crescimento de XP este mês (+450 XP cada).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>EduGame</h3>
+                        <p>Plataforma de gamificação e machine learning para apoio à educação. Transformando o aprendizado através de tecnologia e engajamento.</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Links Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="#" class="footer-nav" data-page="dashboard"><i class="fas fa-chevron-right"></i> Dashboard</a></li>
+                            <li><a href="#" class="footer-nav" data-page="quizzes"><i class="fas fa-chevron-right"></i> Quizzes</a></li>
+                            <li><a href="#" class="footer-nav" data-page="quiz-play"><i class="fas fa-chevron-right"></i> Jogar</a></li>
+                            <li><a href="#" class="footer-nav" data-page="reports"><i class="fas fa-chevron-right"></i> Relatórios</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Contato</h3>
+                        <ul class="footer-links">
+                            <li><i class="fas fa-map-marker-alt"></i> Vitória da Conquista, BA</li>
+                            <li><i class="fas fa-envelope"></i> contato@edugame.com.br</li>
+                            <li><i class="fas fa-phone"></i> (77) 3422-2807</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    <p>© 2022 EduGame - Projeto desenvolvido com apoio da FAPESB - Governo Inteligente II</p>
+                    <p>Gamificação e Machine Learning como ferramentas de apoio à educação</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="scripts/app.js" defer></script>
+
+
+</body>
+</html>
