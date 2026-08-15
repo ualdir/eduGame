@@ -1,16 +1,13 @@
 📚 EduGame - Plataforma de Gamificação Educacional
 <div align="center">
-https://img.icons8.com/color/96/000000/game-controller.png
 
 Plataforma de gamificação e machine learning para apoio à educação
 
-https://img.shields.io/badge/license-MIT-blue.svg
-https://img.shields.io/badge/status-MVP-green.svg
-https://img.shields.io/badge/PRs-welcome-brightgreen.svg
 
 </div>
 📋 Sobre o Projeto
-O EduGame é uma plataforma educacional inovadora que utiliza gamificação e machine learning para engajar alunos no processo de ensino-aprendizagem. Desenvolvido como parte do Edital 007/2021 da FAPESB - Governo Inteligente II, o projeto visa transformar a experiência educacional através de tecnologia e dados.
+O EduGame é uma plataforma educacional inovadora que utiliza gamificação e machine learning para engajar alunos no processo de ensino-aprendizagem. 
+Desenvolvido como parte do Edital 007/2021 da FAPESB - Governo Inteligente II, o projeto visa transformar a experiência educacional através de tecnologia e dados.
 
 🎯 Objetivos
 Engajar alunos através de mecânicas de jogos (XP, níveis, conquistas)
@@ -36,17 +33,16 @@ Responsivo: Funciona em qualquer dispositivo
 
 🚀 Demonstração
 Login e Dashboard
-https://via.placeholder.com/800x400?text=Login+Screen
-https://via.placeholder.com/800x400?text=Dashboard+Aluno
+
 
 Sistema de Quiz Gamificado
-https://via.placeholder.com/800x400?text=Quiz+System
+
 
 Painel do Professor
-https://via.placeholder.com/800x400?text=Teacher+Panel
+
 
 Relatórios e Analytics
-https://via.placeholder.com/800x400?text=Reports
+
 
 🛠️ Tecnologias Utilizadas
 Frontend
